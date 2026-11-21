@@ -172,3 +172,7 @@ For public source IPs, place licensed MaxMind databases in `data/` (they are not
 Restart `python run.py --lan` and `honeypot.py` after you change `data/lab-locations.json` or add the MMDB files. New events are enriched when they arrive; older events are not backfilled.
 
 Check live events and map markers on the **Honeypot** page and under **Monitor → Honeypot**. Lab traffic uses the labels above. Public IPs show city and ASN when the matching database is present.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE). Copyright (c) 2026 Umid Guluzada.
