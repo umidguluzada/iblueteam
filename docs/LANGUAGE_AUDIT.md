@@ -1,0 +1,369 @@
+# Language audit (remaining work)
+
+The current dictionary-based DOM translator does not guarantee full English coverage. A full correction requires replacing hardcoded UI strings with explicit keyed locale messages in every view and modal, then testing all dynamic states. This build fixes the AZ/EN slider geometry but does not claim full translation coverage.
+
+## Azerbaijani-containing source lines requiring review
+
+### api.js (4 lines)
+- L15: `} catch { /* yadda saxlanmadı, sessiya yalnız bu səhifədə qalır */ }`
+- L36: `throw new Error("Serverə qoşulmaq mümkün olmadı. 'python run.py' işləyir?");`
+- L40: `let msg = Xəta ${res.status};`
+- L50: `msg = "Sessiya bitib. Yenidən daxil olun";`
+
+### auth.js (19 lines)
+- L28: `toast("Çıxış edildi");`
+- L37: `<p class="muted">Matrisə baxmaq üçün giriş lazım deyil. Qayda, qeyd və log mənbəyi dəyişikliyi üçün daxil olun.</p>`
+- L38: `<div class="field"><label for="lUser">İstifadəçi adı</label><input id="lUser" type="text" autocomplete="username" autocapitalize="off" spellcheck="fal`
+- L42: `<button type="button" class="btn ghost" data-close>Ləğv et</button>`
+- L57: `$("#lErr").textContent = "İstifadəçi adı və parolu daxil edin";`
+- L67: `toast(Xoş gəlmisiniz, ${res.user.username}, "ok");`
+- L88: `<summary class="btn ghost" aria-label="İstifadəçi menyusu">${icon("user")}<span class="hide-sm">${esc(u.username)}</span></summary>`
+- L90: `<div class="menu-head">${esc(u.username)}<span class="muted">${u.role === "admin" ? "Admin" : u.role === "reviewer" ? "Keyfiyyət nəzarətçisi" : "Anali`
+- L91: `${u.role === "admin" ? <button type="button" role="menuitem" data-act="users">${icon("user")}İstifadəçilər</button> : ""}`
+- L92: `<button type="button" role="menuitem" data-act="logout">${icon("logout")}Çıxış</button>`
+- L109: `const m = openModal({ title: "İstifadəçilər", body: <div id="uList" class="muted">Yüklənir</div><div id="uForm"></div> });`
+- L123: `<span class="grow"><span class="t">${esc(u.username)}</span><span class="s">${u.role === "admin" ? "Admin" : u.role === "reviewer" ? "Keyfiyyət nəzarə`
+- L124: `${u.username === state.user.username ? '<span class="muted">siz</span>' : <button class="btn sm" type="button" data-switch="${esc(u.username)}">Daxil`
+- L133: `<div class="field"><label for="nuName">Yeni istifadəçi adı</label><input id="nuName" type="text" autocomplete="off" spellcheck="false" placeholder="ki`
+- L134: `<div class="field"><label for="nuPass">Parol (ən azı 8 simvol)</label><input id="nuPass" type="password" autocomplete="new-password"></div>`
+- L139: `<label><input type="radio" name="role" value="reviewer"><span>Keyfiyyət nəzarətçisi</span></label>`
+- L143: `<div class="modal-foot"><div class="right"><button type="button" class="btn ghost" data-close>Bağla</button><button class="btn primary" type="submit">`
+- L158: `toast("İstifadəçi silindi");`
+- L175: `toast("İstifadəçi əlavə edildi", "ok");`
+
+### gaps.js (13 lines)
+- L19: `<h1>Boşluqlar</h1>`
+- L20: `<p>Tam örtülməyən texnikalar, prioritet balına görə sıralanıb. Bal boşluğun növündən, texnikanı istifadə edən ATT&amp;CK qruplarının sayından, log mən`
+- L29: `<label class="search">${icon("search")}<input id="gq" type="search" placeholder="Texnika ID və ya ad" aria-label="Boşluq axtar" value="${esc(gf.q)}"><`
+- L30: `<select id="gc" aria-label="Əhatə">`
+- L31: `<option value="">Boşluq və qismən</option>`
+- L32: `<option value="gap" ${gf.cov === "gap" ? "selected" : ""}>Yalnız boşluq</option>`
+- L33: `<option value="partial" ${gf.cov === "partial" ? "selected" : ""}>Yalnız qismən</option>`
+- L34: `<option value="blind" ${gf.cov === "blind" ? "selected" : ""}>Yalnız kor</option>`
+- L37: `<option value="">Bütün taktikalar</option>`
+- L41: `<option value="">Bütün prioritetlər</option>`
+- L75: `box.innerHTML = <div class="empty"><h3>Bütün texnikalar tam örtülüb</h3><p>Boşluq qalmayıb. Yeni qaydalar əlavə olunduqca bu siyahı yenilənəcək.</p><`
+- L79: `box.innerHTML = <div class="empty"><h3>Filtrə uyğun texnika tapılmadı</h3><p>Axtarışı və ya filtrləri dəyişin.</p></div>;`
+- L87: `<thead><tr><th>#</th><th>Texnika</th><th class="hide-md">Taktika</th><th>Əhatə</th><th>Səbəb</th><th title="Texnikanı istifadə edən ATT&CK qrupları">Q`
+
+### honeypot.js (58 lines)
+- L11: `let lastKey = ""; // yalnız bu səhifə sessiyasında, yaradılan açar bir dəfə göstərilir`
+- L13: `const CAT = { scan: "Skan", bruteforce: "Brute force", web: "Veb yoxlama", smb: "SMB cəhdi", rdp: "RDP cəhdi", database: "Verilənlər bazası", exploit:`
+- L26: `const ta = document.createElement("textarea"); // http üzərindən (təhlükəsiz kontekst olmadan) ehtiyat yol`
+- L34: `} catch { /* kopyalanmadı */ }`
+- L44: `: <p class="muted">Hələ məlumat yoxdur.</p>;`
+- L49: `if (!ts) return "heç vaxt";`
+- L51: `return s < 60 ? ${s} san əvvəl : s < 3600 ? ${Math.round(s / 60)} dəq əvvəl : s < 86400 ? ${Math.round(s / 3600)} saat əvvəl : ${Math.round(s /`
+- L57: `root.innerHTML = <div class="page">${loadingHtml("Honeypot yüklənir")}</div>;`
+- L69: `<p>Açıq portlara gələn real skan və hücum cəhdləri burada toplanır. Hər hadisə ATT&amp;CK texnikasına uyğunlaşdırılır və Monitor-da «Honeypot» rejimin`
+- L73: `<a class="btn" href="#/monitor">${icon("pulse")}Monitorda aç</a>`
+- L81: `<section class="hp-card"><h3>Hücum kateqoriyaları</h3><div id="hpCats"></div></section>`
+- L82: `<section class="hp-card"><h3>Ən çox hədəflənən portlar</h3><div id="hpPorts"></div></section>`
+- L83: `<section class="hp-card"><h3>Ən aktiv mənbələr</h3><div id="hpIps"></div></section>`
+- L91: `<button class="btn sm" type="button" id="hpKey">${icon("key")}<span>Sensor açarı yarat</span></button>`
+- L92: `<label class="switch" title="Söndürüləndə sensor hadisələri qəbul olunmur"><input type="checkbox" id="hpEnabled"><i></i>Qəbul açıqdır</label>`
+- L99: `<h3>Simulyasiya (sınaq üçün)</h3>`
+- L100: `<p class="muted">Real internet trafiki yoxdursa, platformanı sınamaq üçün sintetik hadisələr yaradın. Onlar «simulyasiya» işarəsi daşıyır və real stat`
+- L102: `<select id="simCount" aria-label="Hadisə sayı" style="width:auto"><option>10</option><option>25</option><option selected>50</option><option>100</optio`
+- L103: `<button class="btn sm primary" type="button" id="simBtn">${icon("plus")}Hadisə yarat</button>`
+- L104: `<button class="btn sm" type="button" id="simDel">${icon("trash")}Simulyasiyanı sil</button>`
+- L110: `<summary><h3 style="display:inline">Quraşdırma</h3></summary>`
+- L112: `<li>Ayrı, təcrid olunmuş VM açın (açıq IP). Orada real məlumat, parol və açar olmasın.</li>`
+- L113: `<li>VM-in <b>çıxış (egress) trafikini</b> firewall ilə yalnız platformaya və DNS-ə icazə verin.</li>`
+- L114: `<li>Platforma honeypot VM-dən əlçatan olmalıdır (şəxsi şəbəkə və ya WireGuard). Platformanı <code>python run.py --lan</code> ilə işə salın.</li>`
+- L115: `<li><a class="link" href="/api/honeypot/agent" download>Agenti yükləyin (honeypot.py)</a> və VM-də işə salın:</li>`
+- L118: `<p class="muted">1024-dən aşağı portlar üçün <code>sudo</code> lazımdır. <code>--user nobody</code> portlar açılandan sonra imtiyazları endirir. Root `
+- L126: `<h3>Son hadisələr</h3>`
+- L128: `<select id="fCat" aria-label="Kateqoriya"><option value="">Bütün kateqoriyalar</option>${Object.entries(CAT).map(([k, v]) => <option value="${k}" ${h`
+- L129: `<select id="fPort" aria-label="Port"><option value="">Bütün portlar</option>${sum.plan.map((p) => <option value="${p.port}" ${String(hf.port) === Str`
+- L139: `<summary><h3 style="display:inline">Port planı və ATT&amp;CK uyğunlaşdırması</h3></summary>`
+- L141: `<thead><tr><th>Port</th><th>Xidmət</th><th>Susmaya görə kateqoriya</th><th>ATT&amp;CK</th></tr></thead>`
+- L144: `<p class="muted" style="margin-top:10px">Təsnifat heuristikdir (port və ilk baytlar). Tək bağlantı «skan» sayılır. «Brute force» üçün giriş cəhdi əlam`
+- L155: `const [cls, txt] = !s.enabled ? ["paused", "Qəbul söndürülüb"] : online ? ["live", Sensor qoşulub (${online})] : s.key_set ? ["", "Sensor gözlənilir`
+- L161: `<div class="stat"><b>${s.count}</b><span>hadisə (son ${s.hours} saat)</span></div>`
+- L162: `<div class="stat"><b>${s.unique_ips}</b><span>unikal mənbə IP</span></div>`
+- L163: `<div class="stat"><b>${s.real_total}</b><span>real hadisə (cəmi)</span></div>`
+- L165: `<div class="stat"><b>${top ? top.port : "—"}</b><span>${top ? esc(top.service) + ", ən çox hədəf" : "ən çox hədəf"}</span></div>;`
+- L170: `? <div class="list">${s.top_ips.map((i) => <div class="item" style="cursor:default"><span class="grow"><span class="t tid" style="font-size:12.5px;c`
+- L171: `: <p class="muted">Hələ məlumat yoxdur.</p>;`
+- L174: `? s.sensors.map((x) => <div class="srcrow"><i class="state ${x.online ? "full" : "gap"}"></i><span class="grow">${esc(x.name)}</span><span class="mut`
+- L175: `: <p class="muted">Hələ sensor qoşulmayıb.${s.key_set ? " Açar yaradılıb (…" + esc(s.key_hint) + "), agenti işə salın." : " Əvvəl açar yaradın."}</p>`
+- L177: `$("#hpKey span").textContent = s.key_set ? "Açarı yenilə" : "Sensor açarı yarat";`
+- L180: `: <p class="notice warn" style="margin-top:12px">GeoIP bazası yoxdur: real IP-lər xəritədə göstərilmir (siyahıda və statistikada görünür). Pulsuz DB-`
+- L185: `$("#hpCmd").textContent = sudo python3 honeypot.py --url ${origin} --key ${lastKey || "<SENSOR_AÇARI>"} --name hp-1 --user nobody;`
+- L196: `<thead><tr><th>Vaxt</th><th>Mənbə</th><th>Port</th><th>Kateqoriya</th><th>ATT&amp;CK</th><th class="hide-md">Məzmun</th></tr></thead>`
+- L200: `<td><span class="tid" style="font-size:12.5px;color:var(--text)">${esc(e.src_ip)}</span>${e.simulated ? ' <span class="pill" style="margin-left:6px">s`
+- L206: `: <div class="empty"><h3>Hadisə yoxdur</h3><p>Sensor qoşulandan sonra və ya simulyasiya yaradanda hadisələr burada görünəcək.</p></div>;`
+- L215: `} catch { /* növbəti dövrdə yenidən cəhd */ }`
+- L221: `if (state.user.role !== "admin") return toast("Bu əməliyyat yalnız admin üçündür", "error");`
+- L226: `if (sum.key_set && !confirm("Yeni açar köhnəsini ləğv edəcək, sensoru yenidən qurmaq lazım olacaq. Davam edək?")) return;`
+- L231: `$("#keyBox").innerHTML = <div class="keybox"><div class="muted">Açar yalnız indi göstərilir. Kopyalayıb təhlükəsiz yerdə saxlayın:</div><code id="key`
+- L232: `$("#keyCopy").addEventListener("click", async () => toast((await copyText(r.key)) ? "Açar kopyalandı" : "Kopyalamaq alınmadı, əl ilə seçin", "ok"));`
+- L233: `toast("Yeni sensor açarı yaradıldı", "ok");`
+- L245: `toast(want ? "Qəbul açıldı" : "Qəbul söndürüldü", "ok");`
+- L260: `toast(${n} simulyasiya hadisəsi yaradıldı, "ok");`
+- L272: `toast("Silməyi təsdiqləmək üçün düyməyə yenidən basın");`
+- L279: `toast(${r.deleted} simulyasiya hadisəsi silindi, "ok");`
+- L286: `$("#hpCopy").addEventListener("click", async () => toast((await copyText($("#hpCmd").textContent)) ? "Əmr kopyalandı" : "Kopyalamaq alınmadı, əl ilə s`
+
+### main.js (11 lines)
+- L37: `stopMonitor(); // canlı monitor və honeypot yeniləməsi yalnız öz səhifəsində işləyir`
+- L50: `root.innerHTML = <div class="page"><div class="empty"><h3>Səhifə yüklənmədi</h3><p>${esc(e.message)}</p></div></div>;`
+- L58: `["/api/export/matrix.json?platform=" + p, "Matris (JSON)", "Texnikalar, qaydalar, log mənbələri və boşluqlar"],`
+- L59: `["/api/export/matrix.csv?platform=" + p, "Matris (CSV)", "Hər texnika üçün bir sətir"],`
+- L60: `["/api/export/gaps.csv?platform=" + p, "Boşluqlar (CSV)", "Prioritet sırası ilə"],`
+- L78: `themeBtn.setAttribute("aria-label", dark ? "Açıq mövzuya keç" : "Tünd mövzuya keç");`
+- L85: `} catch { /* yadda saxlanmadı, problem deyil */ }`
+- L104: `if (document.querySelector(".modal-backdrop")) return; // modal öz Esc-ini idarə edir`
+- L124: `toast("Sessiya bitib. Yenidən daxil olun", "error");`
+- L134: `root.innerHTML = loadingHtml("Matris yüklənir");`
+- L141: `root.innerHTML = <div class="page"><div class="empty"><h3>Serverə qoşulmaq mümkün olmadı</h3><p>${esc(e.message)}</p></div></div>;`
+
+### matrix.js (19 lines)
+- L24: `if (m.attack_source === "fallback") return "Seçmə ATT&CK dəsti (tam matris üçün README-yə baxın)";`
+- L25: `return m.attack_updated ? ATT&CK Enterprise, məlumat ${m.attack_updated} tarixinə : "ATT&CK Enterprise";`
+- L50: `<input id="q" type="search" placeholder="Texnika ID və ya ad" autocomplete="off" aria-label="Texnika axtar" value="${esc(state.filters.q)}">`
+- L55: `<option value="">Bütün taktikalar</option>`
+- L58: `<select id="dsSel" aria-label="Log mənbəyi">`
+- L59: `<option value="">Bütün log mənbələri</option>`
+- L60: `${dsOptions.map((d) => <option value="${esc(d.name)}" ${d.name === state.filters.ds ? "selected" : ""}>${esc(d.name)}${d.collected ? "" : " (toplanmı`
+- L62: `<div class="chips" role="group" aria-label="Əhatə filtri">`
+- L63: `${chip("all", "Hamısı", T.total)}${chip("full", "Tam", T.full, "full")}${chip("partial", "Qismən", T.partial, "partial")}${chip("gap", "Boşluq", T.gap`
+- L66: `<label class="switch" title="Xanaları əhatə səviyyəsinə görə rəngləndir: qaydaların sayı və keyfiyyəti nəzərə alınır"><input type="checkbox" id="heatT`
+- L70: `<div class="cov-strip" aria-label="Ümumi əhatə">`
+- L71: `<div class="cov-main"><strong>${pct(covered, T.total)}<small>%</small></strong><span>texnikada aşkarlama var (${covered} / ${T.total})</span></div>`
+- L72: `<div class="cov-item" title="Çox qrupun istifadə etdiyi texnikalar daha çox çəkiyə malikdir"><b>${stats.weighted.score}<small>%</small></b><span>risk-`
+- L73: `<div class="cov-item" title="Aşkarlama yoxdur və səbəb log mənbəyinin toplanmamasıdır"><b>${T.blind}</b><span>kor texnika</span></div>`
+- L74: `<div class="cov-legend${state.filters.heat ? " on" : ""}" aria-hidden="true"><span>zəif</span><i></i><span>dərin</span></div>`
+- L167: `<span title="Aşkarlama olan texnika / cəmi: ${st.full + st.partial} / ${st.total}"><b>${cpct}%</b> ${st.full + st.partial}/${st.total}</span>`
+- L184: `? <span class="subbar" title="${t.sub_total} alt-texnika: ${t.sub_full} tam, ${t.sub_partial} qismən">${t.subs.map((s) => <i class="${L[s.own]}"></i`
+- L190: `<button class="cell ${cov}${t.blind ? " blind" : ""}${dim ? " dim" : ""}" style="--heat:${(t.score / 100).toFixed(2)}" type="button" data-open="${esc(`
+- L191: `<span class="cell-top"><span class="tid">${esc(t.id)}</span><span class="cell-flags">${t.obs ? <span class="obs-mark" title="Son 24 saatda ${t.obs} h`
+
+### monitor.js (44 lines)
+- L3: `mavi = aşkarlandı, kəhrəba = qismən, qırmızı = qaçırıldı. Nəticə platformanın cari əhatəsindən gəlir. */`
+- L22: `detected: { label: "Aşkarlandı", vars: "--accent" },`
+- L23: `partial: { label: "Qismən", vars: "--warn" },`
+- L24: `missed: { label: "Qaçırıldı", vars: "--danger" },`
+- L26: `const KEEP = 100; // KPI üçün son hadisələr`
+- L27: `const FEED = 60; // siyahıda saxlanan hadisələr`
+- L54: `root.innerHTML = <div class="page">${loadingHtml("Monitor yüklənir")}</div>;`
+- L56: `if (my !== gen) return; // istifadəçi artıq başqa səhifəyə keçib`
+- L63: `<button class="mon-target" id="monTarget" type="button" aria-pressed="false" aria-label="${esc(cfg.target.name)}: adı göstər"></button>`
+- L65: `<div class="mon-kpi glass" role="group" aria-label="Göstəricilər">`
+- L68: `<span>aşkarlanma, son <span id="kN">0</span> hadisə</span>`
+- L70: `<div class="kpi-item"><b id="kMissed">0</b><span>qaçırıldı</span></div>`
+- L71: `<div class="kpi-item" title="Çox qrupun istifadə etdiyi texnikalara görə çəkili əhatə. Hadisələr də bu çəki ilə seçilir."><b id="kExp">${cfg.expected.`
+- L74: `<div class="mon-status glass" id="monStatus" role="status"><i class="live-dot"></i><span>Qoşulur</span></div>`
+- L77: `<span><i class="mdot detected"></i>Aşkarlandı</span>`
+- L78: `<span><i class="mdot partial"></i>Qismən</span>`
+- L79: `<span><i class="mdot missed"></i>Qaçırıldı</span>`
+- L84: `<aside class="mon-side" aria-label="Hadisə axını">`
+- L86: `<div class="seg" role="radiogroup" aria-label="Mənbə">`
+- L90: `<button class="btn sm" type="button" id="monPause" aria-pressed="false">${icon("pause")}<span>Dayandır</span></button>`
+- L91: `<div class="seg" role="radiogroup" aria-label="Sürət">`
+- L98: `<label class="switch" style="padding:0 16px 10px"><input type="checkbox" id="monOnly"><i></i>Yalnız qaçırılanlar</label>`
+- L100: `<div class="feed" id="monFeed" aria-label="Son hadisələr"></div>`
+- L103: `<h3>Ən təhlükəli boşluqlar</h3>`
+- L110: `<span class="grow"><span class="t"><span class="tid">${esc(g.id)}</span> ${esc(g.name)}</span><span class="s">${g.groups} qrup istifadə edir${g.blind `
+- L114: `<a class="link" href="#/gaps" style="display:inline-block;margin-top:10px">Bütün boşluqlar</a>`
+- L115: `: <p class="muted">Boşluq qalmayıb.</p>`
+- L144: `let hpLast = 0; // son honeypot hadisəsinin gəlmə vaxtı`
+- L391: `? "Hələ qaçırılan hadisə yoxdur."`
+- L393: `? 'Hələ honeypot hadisəsi yoxdur. <a class="link" href="#/honeypot">Honeypot səhifəsindən</a> sensor qoşun və ya simulyasiya yaradın.'`
+- L394: `: "Hadisə gözlənilir"`
+- L426: `$("#kExpL").textContent = "hadisə, son 24 saat";`
+- L427: `$("#monNote").textContent = "Honeypot hadisələri. Nəticə, həmin hücum bizə qarşı olsaydı cari qaydaların onu aşkarlayıb-aşkarlamayacağını göstərir. IP`
+- L430: `$("#kExpL").textContent = "gözlənilən";`
+- L431: `$("#monNote").textContent = "Sintetik hadisələr. Mənbələr məlumat mərkəzi şəhərləridir, IP-lər sənəd aralığındandır.";`
+- L440: `} catch { /* statistika alınmadı */ }`
+- L453: `const liveText = () => (mode === "honeypot" && Date.now() - hpLast > 300000 ? "Hadisə gözlənilir" : "Canlı");`
+- L479: `setStatus("err", "Bağlantı kəsildi, yenidən cəhd olunur");`
+- L489: `pauseBtn.innerHTML = ${icon(paused ? "play" : "pause")}<span>${paused ? "Davam et" : "Dayandır"}</span>;`
+- L490: `setStatus(paused ? "paused" : failures ? "err" : "live", paused ? "Dayandırılıb" : failures ? "Bağlantı kəsildi" : "Canlı");`
+- L512: `setStatus("live", "Qoşulur");`
+- L533: `targetBtn.setAttribute("aria-label", ${cfg.target.name}: adı ${pinTarget ? "gizlət" : "göstər"});`
+- L555: `setStatus("live", "Qoşulur");`
+- L569: `setStatus("err", "Bağlantı kəsildi, yenidən cəhd olunur");`
+
+### overview.js (16 lines)
+- L26: `<h1>İcmal</h1>`
+- L27: `<p>Hansı ATT&amp;CK texnikaları aşkarlanır, hansılar yox. «Tam» aktiv, test olunmuş və log mənbəyi toplanan qayda, «qismən» draft və ya test olunmamış`
+- L34: `<h2>Texnikalar üzrə əhatə</h2>`
+- L36: `<svg class="donut" viewBox="0 0 200 200" role="img" aria-label="${T.full} tam, ${T.partial} qismən, ${T.gap} boşluq, cəmi ${T.total} texnika">`
+- L42: `<span>texnikada ən azı qismən aşkarlama var</span>`
+- L47: `<div class="legend-row"><i class="state partial"></i><span>Qismən</span><span><b>${T.partial}</b><span class="muted">${pct(T.partial, T.total)}%</span`
+- L48: `<div class="legend-row"><i class="state gap"></i><span>Boşluq</span><span><b>${T.gap}</b><span class="muted">${pct(T.gap, T.total)}%</span></span></di`
+- L50: `<p class="legend-sub">Alt-texnikalar: ${S.full} tam, ${S.partial} qismən, ${S.gap} boşluq. Cəmi ${S.total}.<br>Risk-çəkili əhatə: <b>${stats.weighted.`
+- L54: `<h2>Taktikalar üzrə</h2>`
+- L61: `<div class="track" role="img" aria-label="${esc(t.name)}: ${t.full} tam, ${t.partial} qismən, ${t.gap} boşluq">`
+- L73: `<div class="stat"><b>${rules.total}</b><span>Qayda cəmi</span></div>`
+- L76: `<div class="stat"><b>${rules.disabled}</b><span>Söndürülüb</span></div>`
+- L78: `<div class="stat"><b>${stats.tests.total ? stats.tests.pass_rate + "<small>%</small>" : "—"}</b><span>Test uğur faizi (${stats.tests.total} test)</spa`
+- L80: `<div class="stat"><b>${stats.data_sources.collected}<small class="muted"> / ${stats.data_sources.total}</small></b><span>Log mənbəyi toplanır</span></`
+- L81: `<div class="stat"><b>${rules.avg_quality || "—"}</b><span>Orta keyfiyyət (5-dən)</span></div>`
+- L87: `<h2>Qaydaların mənbəyi</h2>`
+
+### panel.js (28 lines)
+- L36: `if (my !== token) return; // daha yeni sorğu gəlib`
+- L62: `? <p class="notice">Bu texnikanın özünə bağlı qayda yoxdur. Əhatə alt-texnikalardan gəlir.</p>`
+- L75: `${t.blind ? <span class="pill blind" title="Aşkarlama yoxdur və səbəb telemetriyadır">${icon("blind")}Kor</span> : ""}`
+- L79: `<button class="icon-btn" type="button" data-act="close" aria-label="Paneli bağla">${icon("close")}</button>`
+- L88: `<div><dt>Qruplar</dt><dd>${t.groups ? ${t.groups} ATT&amp;CK qrupu istifadə edir : "Qrup məlumatı yoxdur"}</dd></div>`
+- L89: `${t.obs && t.obs.count ? <div><dt>Honeypot</dt><dd>Son 24 saatda ${t.obs.count} hadisə</dd></div> : ""}`
+- L90: `${t.coverage !== "gap" ? <div><dt>Dərinlik</dt><dd>${t.score} / 100</dd></div> : ""}`
+- L96: `${t.url.startsWith("https://") ? <a class="link" href="${esc(t.url)}" target="_blank" rel="noopener">MITRE ATT&amp;CK səhifəsində aç</a> : ""}`
+- L119: `<h3>Lazım olan log mənbələri <span>${t.required_sources.filter((s) => s.collected).length}/${t.required_sources.length}</span></h3>`
+- L123: `.map((s) => <div class="srcrow"><i class="state ${s.collected ? "full" : "gap"}"></i><span class="grow">${esc(s.name)}</span><span class="muted">${s.`
+- L125: `<p class="hint muted" style="margin-top:8px">ATT&amp;CK analitiklərinə görə (Windows). Bu mənbələr olmadan aşkarlama mümkün deyil.</p>`
+- L126: `: <p class="muted">ATT&amp;CK bu texnika üçün Windows log mənbəyi göstərmir.</p>`
+- L131: `<h3>Aşkarlama qaydaları <span>${t.rules.length}</span></h3>`
+- L142: `<span class="s">${esc(r.source)}, ${STATUS[r.status]}, ${r.tested ? "test olunub" : "test olunmayıb"}${r.blind ? ", log mənbəyi toplanmır" : ""}</span`
+- L144: `<span class="q" title="Keyfiyyət ${r.quality}/5">${qBars(r.quality)}</span>`
+- L148: `: <p class="muted" style="margin-bottom:10px">Bu texnika üçün qayda yoxdur.</p>`
+- L150: `${state.user?.role !== "reviewer" ? <div style="margin-top:10px"><button class="btn sm" type="button" data-act="add-rule">${icon("plus")}Qayda əlavə `
+- L154: `<h3>Test qeydləri <span>${tests.length}</span></h3>`
+- L163: `${x.method ? <p class="muted" style="margin-top:3px">Üsul: ${esc(x.method)}</p> : ""}`
+- L168: `: <p class="muted">Test qeydi yoxdur. Qaydanı açıb test nəticəsini əlavə edin.</p>`
+- L173: `<h3>Qeydlər <span>${t.notes.length}</span></h3>`
+- L193: `<textarea name="text" placeholder="Boşluq, plan və ya log mənbəyi haqqında qeyd" aria-label="Qeyd mətni" maxlength="1000" required></textarea>`
+- L197: `<option value="high">Yüksək prioritet</option>`
+- L198: `<option value="low">Aşağı prioritet</option>`
+- L200: `<button class="btn" type="submit">Qeyd əlavə et</button>`
+- L203: `: <p class="muted" style="margin-top:8px">Qeyd əlavə etmək üçün <button class="link" type="button" data-act="login">daxil olun</button>.</p>`
+- L219: `if (state.user?.role === "reviewer") return toast("Reviewer qayda yarada bilməz");`
+- L240: `toast("Qeyd əlavə edildi", "ok");`
+
+### reviews.js (9 lines)
+- L5: `const labels = {pending: "Pending · Gözləmədə", approved: "Approved · Təsdiqlənib", rejected: "Rejected · Rədd edilib"};`
+- L8: `root.innerHTML = <div class="page"><div class="page-head"><div><h1>Qayda yoxlamaları</h1><p>Göndərilən qaydalar, gözləyən qərarlar və təsdiqləmə tari`
+- L11: `box.innerHTML = <div class="empty"><h3>Giriş tələb olunur</h3><p>Yoxlamaları görmək üçün Admin, Analyst və ya Reviewer hesabı ilə daxil olun.</p></di`
+- L16: `catch (err) { box.innerHTML = <div class="empty"><h3>Yoxlamalar yüklənmədi</h3><p>${esc(err.message)}</p></div>; return; }`
+- L21: `<div class="filters"><label class="search"><span>Status</span><select id="reviewStatus"><option value="">Hamısı</option><option value="pending">Pendin`
+- L27: `table.innerHTML = rows.length ? <div class="table-wrap"><table><thead><tr><th>Qayda</th><th>Göndərən</th><th>Status</th><th>Qeyd</th><th>Yoxlayan</th`
+- L33: `const comment = window.prompt(btn.dataset.decision === "rejected" ? "Rədd etmə səbəbini daxil edin:" : "Təsdiq qeydi (istəyə bağlı):", "");`
+- L35: `if (btn.dataset.decision === "rejected" && !comment.trim()) { toast("Rədd etmə səbəbi tələb olunur", "error"); return; }`
+- L39: `toast("Yoxlama qərarı saxlanıldı", "ok");`
+
+### rules-import.js (17 lines)
+- L8: `title: "Qaydaları idxal et",`
+- L19: `<strong>Sigma fayllarını seçin və ya bura buraxın</strong>`
+- L20: `<span>.yml və ya .yaml. Bir faylda bir neçə qayda ola bilər.</span>`
+- L26: `<label for="sStatus">Başlanğıc status</label>`
+- L27: `<select id="sStatus"><option value="draft">Draft</option><option value="active">Aktiv</option><option value="disabled">Söndürülüb</option></select>`
+- L31: `<label class="check" style="min-height:38px"><input type="checkbox" id="sTested">Test olunmuş kimi qeyd et</label>`
+- L34: `<p class="hint muted">Qaydadakı <code>attack.t1059.001</code> kimi etiketlər texnikalara, logsource isə log mənbəyinə avtomatik bağlanır. Ləğv olunmuş`
+- L40: `<strong>CSV faylını seçin və ya bura buraxın</strong>`
+- L41: `<span>Məcburi sütun: name. Digərləri: source, status, quality, tested, techniques, logsource, data_sources, description.</span>`
+- L45: `<p class="hint muted">techniques sütununda bir neçə ID nöqtəli vergül ilə ayrılır: <code>T1059.001;T1027</code></p>`
+- L46: `<div><button class="btn sm" type="button" id="tplBtn">${icon("download")}CSV şablonu</button></div>`
+- L52: `<button type="button" class="btn ghost" data-close>Bağla</button>`
+- L53: `<button type="button" class="btn primary" id="impGo">İdxal et</button>`
+- L95: `"Nümunə qayda,Splunk,active,4,true,T1059.001;T1027,Sysmon,WinEventLog:Sysmon,Qaydanın qısa təsviri\n";`
+- L108: `out.innerHTML = <div class="err">Əvvəlcə fayl seçin.</div>;`
+- L129: `<div class="ok">${res.created} qayda əlavə edildi</div>`
+- L130: `${res.unknown_techniques.length ? <div>ATT&amp;CK-da tapılmayan texnikalar (bağlanmadı): ${res.unknown_techniques.map(esc).join(", ")}</div> : ""}`
+
+### rules.js (62 lines)
+- L16: `if (!names.length) return '<span class="muted">bağlı deyil</span>';`
+- L21: `.map((n) => <span class="tchip${ok.has(n) ? "" : " off"}" title="${esc(n)}${ok.has(n) ? "" : ": toplanmır"}">${esc(shortSrc(n))}</span>)`
+- L37: `<p>Aktiv, test olunmuş və log mənbəyi toplanan qayda texnikanı «tam» örtür. Draft, test olunmamış və ya mənbəyi göstərilməmiş qayda «qismən» örtür. Sö`
+- L40: `${userRole !== "reviewer" ? <button class="btn" type="button" id="importBtn">${icon("upload")}İdxal et</button>`
+- L46: `<label class="search">${icon("search")}<input id="rq" type="search" placeholder="Qayda adı axtar" aria-label="Qayda axtar" value="${esc(rf.q)}"></labe`
+- L48: `<option value="">Bütün statuslar</option>`
+- L51: `<select id="rsrc" aria-label="Mənbə">`
+- L52: `<option value="">Bütün mənbələr</option>`
+- L57: `<div class="review-queue"><a class="btn" href="#/reviews">Yoxlamalar və qərarlar →</a></div>`
+- L91: `<h3>Hələ qayda yoxdur</h3>`
+- L92: `<p>Sigma faylı və ya CSV yükləyin, yaxud ilk qaydanı əl ilə əlavə edin. Matris qaydalara görə rənglənəcək.</p>`
+- L94: `<button class="btn" type="button" data-act="import">${icon("upload")}İdxal et</button>`
+- L106: `box.innerHTML = <div class="empty"><h3>Filtrə uyğun qayda tapılmadı</h3><p>Axtarışı və ya filtrləri dəyişin.</p></div>;`
+- L114: `<thead><tr><th>Qayda</th><th>Mənbə</th><th>Status</th><th>Son test</th><th class="hide-md">Log mənbəyi</th><th>Keyfiyyət</th><th>Yoxlama</th></tr></th`
+- L125: `${r.techniques.length ? <div class="tchips">${shown.map((t) => <span class="tchip">${esc(t)}</span>).join("")}${more > 0 ? <span class="tchip">+${`
+- L129: `<span class="pill ${r.level}" title="Əhatəyə töhfəsi: ${r.level === "full" ? "tam" : r.level === "partial" ? "qismən" : "yoxdur"}"><i class="state ${r`
+- L130: `${r.blind ? <span class="pill blind" style="margin-left:6px" title="Log mənbəyi toplanmır: ${esc(r.missing_sources.join(", "))}">${icon("blind")}Kor<`
+- L132: `<td class="num">${last ? <span class="pill ${last.result === "pass" ? "full" : "fail"}" title="${esc(last.method)}">${TEST[last.result]}</span> <span`
+- L135: `<td>${state.user && state.user.role !== "reviewer" ? <button class="btn" type="button" data-submit="${r.id}">Yoxlamaya göndər</button> : ""}</td>`
+- L155: `const comment = window.prompt("Yoxlama üçün qeyd (istəyə bağlı):", "");`
+- L158: `toast("Qayda yoxlamaya göndərildi. Yoxlamalar səhifəsində Pending kimi görünəcək.", "ok");`
+- L187: `errEl.textContent = «${raw.trim()}» tapılmadı;`
+- L224: `title: "Qaydaya baxış",`
+- L225: `body: <div class="field"><b>${esc(rule.name)}</b><p>${esc(rule.description || "Təsvir yoxdur")}</p><p>Status: ${esc(rule.status)} · Keyfiyyət: ${rule`
+- L232: `toast("Reviewer qayda yarada bilməz");`
+- L261: `title: rule ? (ro ? "Qayda" : "Qaydanı redaktə et") : "Yeni qayda",`
+- L268: `<label for="rName">Qayda adı</label>`
+- L269: `<input id="rName" type="text" maxlength="200" value="${esc(r.name)}" placeholder="məs: Encoded PowerShell Command Line">`
+- L272: `<label for="rSource">Mənbə</label>`
+- L278: `${seg("status", [["draft", "Draft"], ["active", "Aktiv"], ["disabled", "Söndürülüb"]], r.status)}`
+- L281: `<span class="lbl">Keyfiyyət</span>`
+- L286: `<label for="rTech">ATT&amp;CK texnikaları</label>`
+- L287: `<div class="tags" id="tagBox"><input id="rTech" type="text" list="techList" placeholder="T1059.001 yazın və ya siyahıdan seçin" autocomplete="off"></d`
+- L289: `<span class="hint">Qayda hansı texnikanı aşkar edir? Ləğv olunmuş ID yazsanız, avtomatik yeni ID-yə çevrilir.</span>`
+- L292: `<label for="rSrc">Lazım olan log mənbələri</label>`
+- L293: `<div class="tags" id="srcBox"><input id="rSrc" type="text" list="srcCatalog" placeholder="məs: WinEventLog:Sysmon" autocomplete="off"></div>`
+- L294: `<datalist id="srcCatalog">${state.sources.map((s) => <option value="${esc(s.name)}" label="${s.collected ? "toplanır" : "toplanmır"}">).join("")}</d`
+- L295: `<span class="hint">Qaydanın işləməsi üçün vacib mənbələr. Birinə toplanmırsa, qayda «kor» sayılır və əhatəyə daxil olmur. Heç biri seçilməsə, qayda ən`
+- L298: `<label for="rLog">Logsource (Sigma təsviri)</label>`
+- L299: `<input id="rLog" type="text" value="${esc(r.logsource)}" placeholder="məs: windows / process_creation">`
+- L302: `<label for="rDesc">Təsvir</label>`
+- L303: `<textarea id="rDesc" placeholder="Qayda nəyi aşkar edir və niyə vacibdir?">${esc(r.description)}</textarea>`
+- L306: `<label for="rContent">Qayda mətni (Sigma, SPL, KQL və s.)</label>`
+- L315: `<button type="button" class="btn ghost" data-close>${ro ? "Bağla" : "Ləğv et"}</button>`
+- L316: `${ro ? <button type="button" class="btn primary" id="rLogin">Redaktə üçün daxil ol</button> : <button class="btn primary" type="submit">${rule ? "Y`
+- L327: `box: $("#tagBox"), input: $("#rTech"), values: techs, seps: ["Enter", ",", ";", " "], errEl: err, noun: "texnikasını",`
+- L329: `resolve: (id) => (known.has(id) || /^T\d{4}(\.\d{3})?$/.test(id) ? id : null), // ləğv olunmuş ID-ni server çevirir`
+- L332: `box: $("#srcBox"), input: $("#rSrc"), values: srcs, seps: ["Enter", ","], errEl: err, noun: "mənbəyini",`
+- L335: `decorate: (n) => <i class="state ${catalog.get(n.toLowerCase())?.collected ? "full" : "gap"}" title="${catalog.get(n.toLowerCase())?.collected ? "top`
+- L363: `sec.innerHTML = <h3>Test qeydləri</h3><p class="muted">Qayda yaradıldıqdan sonra test qeydi əlavə edə biləcəksiniz.</p>;`
+- L367: `<h3>Test qeydləri <span>${r.tests.length}</span></h3>`
+- L377: `${t.method ? <p><b style="font-weight:600">Üsul:</b> ${esc(t.method)}</p> : ""}`
+- L382: `: <p class="muted">Hələ test qeydi yoxdur.</p>}`
+- L387: `<div class="field"><span class="lbl">Nəticə</span>${seg("tres", [["pass", "Keçdi"], ["fail", "Uğursuz"]], "pass")}</div>`
+- L388: `<div class="field full"><label for="tMethod">Üsul</label><input id="tMethod" type="text" maxlength="200" placeholder="məs: Atomic Red Team T1059.001, `
+- L389: `<div class="field full"><label for="tNotes">Qeyd</label><textarea id="tNotes" maxlength="1500" placeholder="Nə baş verdi? Alert nə qədər tez yarandı? `
+- L392: `<div><button class="btn" type="submit">${icon("plus")}Test qeydi əlavə et</button></div>`
+- L416: `tErr.textContent = "Tarix seçin";`
+- L429: `toast("Test qeydi əlavə edildi", "ok");`
+- L450: `del.textContent = "Əminsiniz? Sil";`
+
+### sources.js (26 lines)
+- L7: `const isDefaultDesc = (d) => !d || d.startsWith("ATT&CK analitikalarında");`
+- L19: `<h1>Log mənbələri</h1>`
+- L20: `<p>Hansı mənbələrin SIEM-ə həqiqətən toplandığını işarələyin. Toplanmayan mənbəyə bağlı qayda «kor» sayılır və əhatəyə daxil olmur. Mənbə adları və te`
+- L24: `<button class="btn primary" type="button" id="newSrc">${icon("plus")}Mənbə əlavə et</button>`
+- L29: `<div class="stat"><b>${st.collected}<small class="muted"> / ${st.total}</small></b><span>mənbə toplanır</span></div>`
+- L30: `<div class="stat"><b>${st.in_use}</b><span>qaydalarda istifadə olunur</span></div>`
+- L36: `<label class="search">${icon("search")}<input id="sq" type="search" placeholder="Mənbə axtar" aria-label="Mənbə axtar" value="${esc(sf.q)}"></label>`
+- L37: `<select id="sv" aria-label="Görünüş">`
+- L38: `<option value="all" ${sf.view === "all" ? "selected" : ""}>Hamısı</option>`
+- L39: `<option value="on" ${sf.view === "on" ? "selected" : ""}>Toplanır</option>`
+- L40: `<option value="off" ${sf.view === "off" ? "selected" : ""}>Toplanmır</option>`
+- L41: `<option value="used" ${sf.view === "used" ? "selected" : ""}>Qaydası olan</option>`
+- L44: `<option value="">Bütün kateqoriyalar</option>`
+- L80: `box.innerHTML = <div class="empty"><h3>Filtrə uyğun mənbə tapılmadı</h3><p>Axtarışı və ya filtrləri dəyişin.</p></div>;`
+- L85: `<p class="muted" style="margin-bottom:10px">${rows.length} mənbə</p>`
+- L88: `<thead><tr><th>Toplanır</th><th>Mənbə</th><th class="hide-md">Toplayıcı</th><th>Qayda</th><th title="Bu mənbəni tələb edən ATT&CK texnikaları">Texnika`
+- L94: `<td><label class="switch"><input type="checkbox" data-toggle="${s.id}" ${s.collected ? "checked" : ""} aria-label="${esc(s.name)} toplanır"><i></i></l`
+- L126: `toast(want ? "Mənbə toplanır kimi işarələndi" : "Mənbə toplanmır kimi işarələndi", "ok");`
+- L139: `title: src ? "Mənbəni redaktə et" : "Yeni log mənbəyi",`
+- L143: `<div class="field full"><label for="sName">Ad</label><input id="sName" type="text" maxlength="120" value="${esc(src?.name || "")}" ${src ? "disabled" `
+- L144: `<div class="field full"><label for="sColl">Toplayıcı</label><input id="sColl" type="text" maxlength="120" value="${esc(src?.collector || "")}" placeho`
+- L145: `<div class="field full"><label for="sDesc">Təsvir</label><textarea id="sDesc" maxlength="500">${esc(isDefaultDesc(src?.description) ? "" : src.descrip`
+- L146: `<div class="field full"><label class="check"><input type="checkbox" id="sOn" ${src?.collected ? "checked" : ""}>SIEM-ə toplanır</label></div>`
+- L149: `<div class="modal-foot"><div class="right"><button type="button" class="btn ghost" data-close>Ləğv et</button><button class="btn primary" type="submit`
+- L161: `$("#sErr").textContent = "Mənbə adını yazın";`
+- L167: `toast("Yadda saxlanıldı", "ok");`
+
+### state.js (2 lines)
+- L9: `index: [], // [{id, name}] qayda formunda texnika axtarışı üçün`
+- L10: `sources: [], // log mənbəyi kataloqu (qayda formu üçün)`
+
+### ui.js (7 lines)
+- L6: `export const COV = { full: "Tam", partial: "Qismən", gap: "Boşluq" };`
+- L7: `export const STATUS = { active: "Aktiv", draft: "Draft", disabled: "Söndürülüb" };`
+- L8: `export const PRIO = { high: "Yüksək", medium: "Orta", low: "Aşağı" };`
+- L9: `export const TEST = { pass: "Keçdi", fail: "Uğursuz" };`
+- L15: `<option value="all" ${state.filters.platform === "all" ? "selected" : ""}>Bütün platformalar</option>`
+- L67: `export function loadingHtml(text = "Yüklənir") {`
+- L80: `<button class="icon-btn" type="button" data-close aria-label="Bağla">${icon("close")}</button>`
+

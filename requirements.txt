@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+sqlalchemy>=2.0
+pyyaml>=6.0
+python-multipart>=0.0.9
+
+# Ixtiyari: honeypot real IP-lerin xeritede gorunmesi ucun (data/dbip-city-lite.mmdb lazimdir)
+maxminddb>=2.5

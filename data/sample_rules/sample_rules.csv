@@ -1,0 +1,4 @@
+name,source,status,quality,tested,techniques,logsource,description
+Certutil Download Activity,Splunk,active,4,true,T1105,Sysmon / EDR,certutil.exe ilə uzaq fayl yüklənməsi
+Credential Dumping via comsvcs.dll MiniDump,Elastic,active,4,true,T1003.001,Windows / process,comsvcs.dll vasitəsilə LSASS yaddaş dump-ı
+Sign-in From Unfamiliar Country,Sentinel,active,3,false,T1078.004,Entra ID / SigninLogs,Əvvəl görünməyən ölkədən giriş

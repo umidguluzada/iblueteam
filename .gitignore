@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+data/ibluteam.db
+data/ibluteam.db-journal
+data/.secret
+honeypot-spool.jsonl
+data/*.mmdb
+
+data/lab-locations.json
